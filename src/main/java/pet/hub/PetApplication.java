@@ -8,10 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @SpringBootApplication
 public class PetApplication {
-	@GetMapping("/")
-	public String home() {
-		return "Hello Docker World from Spring Boot!";
-	}
 	public static void main(String[] args) {
 		SpringApplication.run(PetApplication.class, args);
 	}
