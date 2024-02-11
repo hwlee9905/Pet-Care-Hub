@@ -4,10 +4,10 @@ spring:
       driver-class-name: com.mysql.cj.jdbc.Driver
       username: replUser
       password: 1234
-      jdbc-url: jdbc:mysql://localhost:13306/test?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+      jdbc-url: jdbc:mysql://localhost:13306/pet_hub?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
 
     slave:
       driver-class-name: com.mysql.cj.jdbc.Driver
       username: replUser
       password: 1234
-      jdbc-url: jdbc:mysql://localhost:13307/test?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+      jdbc-url: jdbc:mysql://localhost:13307/pet_hub?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul

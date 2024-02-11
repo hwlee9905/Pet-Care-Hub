@@ -1,10 +1,11 @@
-package pet.hub.domain;
+package pet.hub.app.domain.pet;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import pet.hub.app.domain.pet.PetService;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class PetServiceTest {
