@@ -2,6 +2,8 @@ package pet.hub.app.domain.pet;
 
 import jakarta.persistence.*;
 import lombok.*;
+import pet.hub.app.domain.BaseEntity;
+import pet.hub.app.domain.pet.enums.PetType;
 
 @Getter
 @Setter
@@ -16,4 +18,10 @@ public class Pet {
     private Long id;
 
     private String name;
+
+    @Enumerated(EnumType.STRING)
+    private PetType petType;
+
+    @Embedded
+    private PetBirth petBirth;
 }
