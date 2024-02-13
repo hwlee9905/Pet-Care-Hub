@@ -5,6 +5,8 @@ import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import pet.hub.app.domain.user.util.Role;
+import pet.hub.app.domain.user.util.Sex;
 
 import java.time.LocalDateTime;
 
@@ -19,9 +21,19 @@ import java.time.LocalDateTime;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long Id;
+    private String userId;
+    private String pw;
+    private String name;
     private String nickname;
     private String address;
+    private String profileUrl;
+    @Lob
+    private String introduction;
+    @Enumerated
+    private Sex sex;
+    @Enumerated
+    private Role role;
     @CreatedDate
     private LocalDateTime createdAt;
     @LastModifiedDate
