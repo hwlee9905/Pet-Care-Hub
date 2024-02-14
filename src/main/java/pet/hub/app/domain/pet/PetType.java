@@ -1,4 +1,4 @@
-package pet.hub.app.domain.pet.enums;
+package pet.hub.app.domain.pet;
 
 public enum PetType {
     DOG_POMERANIAN,

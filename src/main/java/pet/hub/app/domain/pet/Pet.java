@@ -2,8 +2,6 @@ package pet.hub.app.domain.pet;
 
 import jakarta.persistence.*;
 import lombok.*;
-import pet.hub.app.domain.BaseEntity;
-import pet.hub.app.domain.pet.enums.PetType;
 
 @Getter
 @Setter
