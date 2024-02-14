@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Profile {
+public class ProfileImage {
     private String url;
     private String path;
     private String name;

@@ -16,19 +16,20 @@ import pet.hub.app.domain.user.util.Sex;
 public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
-    private String userId;
-    private String pw;
-    private String name;
+    private Long id;
+    private String username;
     private String nickname;
     @Embedded
     private Address address;
-
+    @Embedded
+    private ProfileImage profileImage;
     @Lob
     private String introduction;
     @Enumerated(EnumType.STRING)
     private Sex sex;
     @Enumerated(EnumType.STRING)
     private Role role;
-
+    @OneToOne
+    @JoinColumn(name = "id")
+    private Authentication authentication;
 }

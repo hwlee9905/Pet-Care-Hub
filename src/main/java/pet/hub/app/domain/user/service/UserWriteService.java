@@ -15,7 +15,7 @@ import pet.hub.app.domain.user.util.Sex;
 
 @RequiredArgsConstructor
 @Service
-public class UserService {
+public class UserWriteService {
     private final UserRepository userRepository;
     private final AuthenticationRepository authenticationRepository;
     @Transactional
