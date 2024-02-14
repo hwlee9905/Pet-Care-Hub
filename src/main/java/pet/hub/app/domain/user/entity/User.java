@@ -2,13 +2,9 @@ package pet.hub.app.domain.user.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import pet.hub.app.domain.BaseEntity;
 import pet.hub.app.domain.user.util.Role;
 import pet.hub.app.domain.user.util.Sex;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -17,8 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 @Table(name = "user")
-@EntityListeners(AuditingEntityListener.class)
-public class User {
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
@@ -26,16 +21,14 @@ public class User {
     private String pw;
     private String name;
     private String nickname;
-    private String address;
-    private String profileUrl;
+    @Embedded
+    private Address address;
+
     @Lob
     private String introduction;
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private Sex sex;
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private Role role;
-    @CreatedDate
-    private LocalDateTime createdAt;
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
+
 }
