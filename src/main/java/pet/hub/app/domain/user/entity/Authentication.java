@@ -2,6 +2,7 @@ package pet.hub.app.domain.user.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import pet.hub.app.domain.BaseEntity;
 import pet.hub.app.domain.user.util.InfoSet;
 
 @Getter
@@ -11,7 +12,7 @@ import pet.hub.app.domain.user.util.InfoSet;
 @Builder
 @Entity
 @Table(name = "authentication")
-public class Authentication {
+public class Authentication extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,7 +20,6 @@ public class Authentication {
     private String password;
     private String salt;
     private String email;
-    private String signupDate;
     private Integer failCount;
     @Enumerated(EnumType.STRING)
     private InfoSet infoSet;

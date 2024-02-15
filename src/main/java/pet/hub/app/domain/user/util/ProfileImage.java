@@ -1,4 +1,4 @@
-package pet.hub.app.domain.user.entity;
+package pet.hub.app.domain.user.util;
 
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Address {
-    private String city;
-    private String district;
-    private String roadAddress;
+public class ProfileImage {
+    private String url;
+    private String path;
+    private String imageName;
 }

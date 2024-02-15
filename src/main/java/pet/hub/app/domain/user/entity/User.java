@@ -3,6 +3,8 @@ package pet.hub.app.domain.user.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import pet.hub.app.domain.BaseEntity;
+import pet.hub.app.domain.user.util.Address;
+import pet.hub.app.domain.user.util.ProfileImage;
 import pet.hub.app.domain.user.util.Role;
 import pet.hub.app.domain.user.util.Sex;
 
