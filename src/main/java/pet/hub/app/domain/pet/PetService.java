@@ -33,6 +33,6 @@ public class PetService {
     @Transactional(readOnly = true)
     public Pet readPet(Long id) {
         return petRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(""));
+                .orElseThrow(() -> new EntityNotFoundException("등록되지 않은 반려동물입니다."));
     }
 }
