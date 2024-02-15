@@ -12,14 +12,14 @@ public class PetService {
     private final PetRepository petRepository;
 
     @Transactional(rollbackFor = Exception.class)
-    public void createPet(PetRequest request) {
+    public Pet createPet(PetRequest request) {
         Pet pet = Pet.builder()
                 .name(request.getName())
                 .petType(request.getPetType())
                 .petBirth(request.getPetBirth())
                 .build();
 
-        petRepository.save(pet);
+        return petRepository.save(pet);
     }
 
     public void updatePet(PetRequest petRequest) {
