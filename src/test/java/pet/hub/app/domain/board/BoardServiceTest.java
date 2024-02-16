@@ -1,40 +1,59 @@
 package pet.hub.app.domain.board;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import pet.hub.app.domain.board.enums.BoardTab;
+import pet.hub.app.web.dto.board.BoardRequestDto;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import java.util.Optional;
 
-@SpringBootTest
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
 public class BoardServiceTest {
-    @Autowired
-    private BoardService boardService;
 
-    @Autowired
+    @Mock
     private BoardRepository boardRepository;
+
+    @InjectMocks
+    private BoardService boardService;
 
     @BeforeEach
     void setUp() {
         boardRepository.deleteAll();
+
+        Board board = Board.builder()
+                    .boardId(1L)
+                    .title("Dto Save Test")
+                    .content("Dto Save Test2")
+                    .boardtab(BoardTab.CAT)
+                    .build();
+        Mockito.lenient().when(boardRepository.findById(1L)).thenReturn(Optional.of(board));
     }
 
     @Test
     public void boardSave(){
-        String title = "spring";
-        String content = "Boot";
-        BoardTab tab = BoardTab.CAT;
-        Long userId = 1L;
+        BoardRequestDto requestDto = BoardRequestDto.builder()
+                        .title("Dto Save Test")
+                        .content("Dto Save Test2")
+                        .boardtab(BoardTab.CAT)
+                        .build();
 
-        Board savedBoard = boardService.save(title, content, tab, userId);
+        when(boardRepository.save(any(Board.class))).then(returnsFirstArg());
 
-        Board foundBoard = boardRepository.findById(savedBoard.getBoardId()).orElse(null);
-        assertThat(foundBoard).isNotNull();
-        assertThat(foundBoard.getTitle()).isEqualTo(title);
-        assertThat(foundBoard.getContent()).isEqualTo(content);
-        assertThat(foundBoard.getBoardtab()).isEqualTo(tab);
-        assertThat(foundBoard.getUserId()).isEqualTo(userId);
+        Board savedBoard = boardService.boardSave(requestDto);
+
+        Assertions.assertEquals(boardRepository.findById(1L).get().getTitle(), savedBoard.getTitle());
+        Assertions.assertEquals(boardRepository.findById(1L).get().getContent(), savedBoard.getContent());
+        Assertions.assertEquals(boardRepository.findById(1L).get().getBoardtab(), savedBoard.getBoardtab());
     }
 }
