@@ -19,8 +19,7 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long boardId;
 
-    @Column(nullable = false)
-    private Long userId;
+    //userId 추가 예정
 
     @Column(name = "title", nullable = false)
     private String title;

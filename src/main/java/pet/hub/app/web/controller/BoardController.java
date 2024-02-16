@@ -1,8 +1,7 @@
 package pet.hub.app.web.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pet.hub.app.domain.board.BoardRepository;
 import pet.hub.app.domain.board.BoardService;
 
@@ -10,8 +9,7 @@ import pet.hub.app.domain.board.BoardService;
 @RestController
 public class BoardController {
 
-    private BoardRepository boardRepository;
-    private BoardService boardService;
-
+    private final BoardRepository boardRepository;
+    private final BoardService boardService;
 
 }
