@@ -16,4 +16,10 @@ public class Pet {
     private Long id;
 
     private String name;
+
+    @Enumerated(EnumType.STRING)
+    private PetType petType;
+
+    @Embedded
+    private PetBirth petBirth;
 }
