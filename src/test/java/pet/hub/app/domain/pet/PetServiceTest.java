@@ -16,7 +16,6 @@ import java.util.Optional;
 
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -40,9 +39,9 @@ class PetServiceTest {
         Mockito.lenient().when(petRepository.findById(1L)).thenReturn(Optional.of(pet));
     }
 
-    @DisplayName("When_Create_Pet")
+    @DisplayName("Create_Pet")
     @Test
-    public void When_Create_Pet() {
+    public void Create_Pet() {
         // given
         PetRequest request = requestFactory(
                 "Test",
@@ -56,13 +55,13 @@ class PetServiceTest {
         Pet result = petService.createPet(request);
 
         // then
-        Assertions.assertEquals(petRepository.findById(1L).get().getName(), result.getName());
-        Assertions.assertEquals(petRepository.findById(1L).get().getPetType(), result.getPetType());
+        Assertions.assertEquals(request.getName(), result.getName());
+        Assertions.assertEquals(request.getPetType(), result.getPetType());
     }
 
-    @DisplayName("When_Read_Pet")
+    @DisplayName("Read_Pet")
     @Test
-    public void When_Read_Pet() {
+    public void Read_Pet() {
         // when
         Pet pet = petService.readPet(1L);
 
@@ -71,15 +70,70 @@ class PetServiceTest {
         Assertions.assertEquals(petRepository.findById(1L).get().getPetType(), pet.getPetType());
     }
 
-    @DisplayName("When_Read_Pet_Throw_EntityNotFoundException")
+    @DisplayName("Read_Pet_When_Throw_EntityNotFoundException")
     @Test
-    public void When_Read_Pet_Throw_EntityNotFoundException() {
+    public void Read_Pet_When_Throw_EntityNotFoundException() {
         // given
         when(petRepository.findById(2L)).thenReturn(Optional.empty());
 
         // when, then
         Assertions.assertThrows(EntityNotFoundException.class, () -> {
             petService.readPet(2L);
+        });
+    }
+
+    @DisplayName("Update_Pet")
+    @Test
+    public void Update_Pet() {
+        // given
+        PetRequest request = requestFactory("Update", PetType.CAT_PERSIAN,
+                petBirthFactory("2021", "07", "23"));
+        // when
+        Pet result = petService.updatePet(1L, request);
+        // then
+        Assertions.assertEquals(request.getName(), result.getName());
+        Assertions.assertEquals(request.getPetType(), result.getPetType());
+        Assertions.assertEquals(request.getPetBirth().getYear(), result.getPetBirth().getYear());
+    }
+
+    @DisplayName("Update_Pet_When_Throw_EntityNotFoundException")
+    @Test
+    public void Update_Pet_When_Throw_EntityNotFoundException() {
+        // given
+        PetRequest request = requestFactory(
+                "Update",
+                PetType.CAT_PERSIAN,
+                petBirthFactory("2021", "07", "23")
+        );
+        when(petRepository.findById(2L)).thenReturn(Optional.empty());
+        // when, then
+        Assertions.assertThrows(EntityNotFoundException.class, () -> {
+            petService.updatePet(2L, request);
+        });
+    }
+
+    @DisplayName("Delete_Pet")
+    @Test
+    public void Delete_Pet() {
+        // given
+        Pet pet = petRepository.findById(1L).get();
+
+        // when
+        petService.deletePet(1L);
+
+        // then
+        Mockito.verify(petRepository, Mockito.times(1)).delete(pet);
+    }
+
+    @DisplayName("Delete_Pet_When_Throw_EntityNotFoundException")
+    @Test
+    public void Delete_Pet_When_Throw_EntityNotFoundException() {
+        // given
+        when(petRepository.findById(2L)).thenReturn(Optional.empty());
+
+        // when, then
+        Assertions.assertThrows(EntityNotFoundException.class, () -> {
+            petService.deletePet(2L);
         });
     }
 
