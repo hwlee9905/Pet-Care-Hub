@@ -17,8 +17,6 @@ import javax.sql.DataSource;
 @EnableTransactionManagement
 @EnableJpaAuditing
 public class JpaConfiguration {
-
-
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(
             @Qualifier("dataSource") DataSource dataSource

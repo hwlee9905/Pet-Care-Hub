@@ -14,7 +14,6 @@ import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-@Slf4j
 public class UserServiceTest {
     @Autowired
     private UserWriteService userWriteService;

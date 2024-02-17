@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Getter
-@Setter
+//@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -16,4 +16,22 @@ public class Pet {
     private Long id;
 
     private String name;
+
+    @Enumerated(EnumType.STRING)
+    private PetType petType;
+
+    @Embedded
+    private PetBirth petBirth;
+
+    protected void setName(String name) {
+        this.name = name;
+    }
+
+    protected void setPetType(PetType petType) {
+        this.petType = petType;
+    }
+
+    protected void setPetBirth(PetBirth petBirth) {
+        this.petBirth = petBirth;
+    }
 }
