@@ -18,7 +18,6 @@ public class Authentication extends BaseEntity {
     private Long id;
     private String userId;
     private String password;
-    private String salt;
     private String email;
     private Integer failCount;
     @Enumerated(EnumType.STRING)

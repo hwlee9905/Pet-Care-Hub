@@ -1,6 +1,7 @@
 package pet.hub.app.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pet.hub.app.domain.user.dto.request.SignupRequestDto;
@@ -17,13 +18,13 @@ import pet.hub.app.domain.user.util.Role;
 public class UserWriteService {
     private final UserRepository userRepository;
     private final AuthenticationRepository authenticationRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     @Transactional
     public User signup(SignupRequestDto signupRequestDto) {
         Authentication authentication = Authentication.builder()
                 .userId(signupRequestDto.getUserId())
                 .email(signupRequestDto.getEmail())
-                .password(signupRequestDto.getPassword())
-                .infoSet(InfoSet.DEFAULT)
+                .password(bCryptPasswordEncoder.encode(signupRequestDto.getPassword()))
                 .build();
         authenticationRepository.save(authentication);
         Address address = Address.builder()
@@ -33,7 +34,7 @@ public class UserWriteService {
                 .build();
         User user = User.builder()
                 .username(signupRequestDto.getUsername())
-                .role(Role.USER)
+                .role(Role.ADMIN)
                 .nickname(signupRequestDto.getNickname())
                 .sex(signupRequestDto.getSex())
                 .address(address)
