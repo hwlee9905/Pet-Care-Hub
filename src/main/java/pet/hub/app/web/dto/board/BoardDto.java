@@ -5,7 +5,6 @@ import pet.hub.app.domain.board.enums.BoardTab;
 
 
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
