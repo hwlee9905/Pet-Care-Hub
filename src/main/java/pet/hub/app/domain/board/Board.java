@@ -1,13 +1,11 @@
 package pet.hub.app.domain.board;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import pet.hub.app.domain.BaseEntity;
 import pet.hub.app.domain.board.enums.BoardTab;
-
-import java.time.LocalDateTime;
+import pet.hub.app.domain.user.entity.User;
 
 @Getter
 @Setter
@@ -20,7 +18,10 @@ public class Board extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long boardId;
 
-    //userId 추가 예정
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private User user;
 
     @Column(name = "title", nullable = false)
     private String title;
@@ -29,7 +30,6 @@ public class Board extends BaseEntity {
     private String content;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private BoardTab boardtab;
-
+    @Column(name="boardTab", nullable = false)
+    private BoardTab boardTab;
 }
