@@ -4,12 +4,12 @@ import lombok.*;
 import pet.hub.app.domain.board.enums.BoardTab;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class BoardRequestDto {
+    private Long userId;
     private String title;
     private String content;
-    private BoardTab boardtab;
+    private BoardTab boardTab;
 }

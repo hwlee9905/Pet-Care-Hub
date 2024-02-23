@@ -8,8 +8,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.context.SpringBootTest;
 import pet.hub.app.domain.board.enums.BoardTab;
+import pet.hub.app.domain.user.repository.UserRepository;
 import pet.hub.app.web.dto.board.BoardRequestDto;
 
 import java.util.Optional;
@@ -24,6 +24,9 @@ public class BoardServiceTest {
     @Mock
     private BoardRepository boardRepository;
 
+    @Mock
+    private UserRepository userRepository;
+
     @InjectMocks
     private BoardService boardService;
 
@@ -35,7 +38,7 @@ public class BoardServiceTest {
                     .boardId(1L)
                     .title("Dto Save Test")
                     .content("Dto Save Test2")
-                    .boardtab(BoardTab.CAT)
+                    .boardTab(BoardTab.CAT)
                     .build();
         Mockito.lenient().when(boardRepository.findById(1L)).thenReturn(Optional.of(board));
     }
@@ -45,15 +48,17 @@ public class BoardServiceTest {
         BoardRequestDto requestDto = BoardRequestDto.builder()
                         .title("Dto Save Test")
                         .content("Dto Save Test2")
-                        .boardtab(BoardTab.CAT)
+                        .boardTab(BoardTab.CAT)
+                        .userId(1L)
                         .build();
+        when(userRepository.findById(any(Long.class))).thenThrow(new RuntimeException("해당하는 유저가 없습니다."));
 
         when(boardRepository.save(any(Board.class))).then(returnsFirstArg());
 
-        Board savedBoard = boardService.boardSave(requestDto);
+        Board savedBoard = boardService.saveBoard(requestDto);
 
         Assertions.assertEquals(boardRepository.findById(1L).get().getTitle(), savedBoard.getTitle());
         Assertions.assertEquals(boardRepository.findById(1L).get().getContent(), savedBoard.getContent());
-        Assertions.assertEquals(boardRepository.findById(1L).get().getBoardtab(), savedBoard.getBoardtab());
+        Assertions.assertEquals(boardRepository.findById(1L).get().getBoardTab(), savedBoard.getBoardTab());
     }
 }
