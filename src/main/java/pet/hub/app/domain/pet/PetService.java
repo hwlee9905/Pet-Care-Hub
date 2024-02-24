@@ -37,10 +37,12 @@ public class PetService {
         pet.setName(request.getName());
         pet.setPetType(request.getPetType());
         pet.setPetBirth(request.getPetBirth());
+        pet.setPetAlbums(request.getPetAlbums());
 
         return pet;
     }
 
+    @Transactional
     public void deletePet(final Long id) {
         Optional<Pet> pet = petRepository.findById(id);
 
