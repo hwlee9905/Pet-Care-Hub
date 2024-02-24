@@ -1,6 +1,7 @@
 package pet.hub.app.domain.board;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pet.hub.app.domain.user.entity.User;
@@ -9,6 +10,7 @@ import pet.hub.app.web.dto.board.BoardRequestDto;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -47,8 +49,14 @@ public class BoardService {
         return updatedBoard;
     }
 
+    /**
+     * TODO
+     * Pageable 오류 수정
+     */
     @Transactional(readOnly = true)
     public List<Board> searchBoards(String keyword) {
-        return boardRepository.findByTitleContainingOrContentContaining(keyword, keyword);
+        return boardRepository.findByTitleContainingOrContentContaining(keyword, keyword, Pageable.ofSize(5))
+                .stream()
+                .collect(Collectors.toList());
     }
 }
