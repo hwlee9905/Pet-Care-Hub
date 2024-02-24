@@ -12,6 +12,7 @@ import java.util.Iterator;
 
 
 @RestController
+@RequestMapping("/")
 @RequiredArgsConstructor
 public class AdminController {
     //.requestMatchers("/admin").hasAnyAuthority("ADMIN") ADMIN 계정 로그인 필요
@@ -20,7 +21,7 @@ public class AdminController {
         return "관리자로 로그인하셨습니다. 관리자 컨트롤러입니다.";
     }
     //현재 세션 정보 확인
-    @GetMapping("/")
+    @GetMapping("/auth")
     public String mainP() {
 
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
