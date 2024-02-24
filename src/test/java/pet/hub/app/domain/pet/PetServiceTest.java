@@ -9,9 +9,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import pet.hub.app.domain.pet.album.PetAlbum;
 import pet.hub.app.web.dto.pet.PetRequest;
 import pet.hub.common.exception.EntityNotFoundException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
@@ -82,6 +85,32 @@ class PetServiceTest {
         });
     }
 
+    @DisplayName("Read_PetAlbums_From_Pet")
+    @Test
+    public void Read_PetAlbums_From_Pet() {
+        // given
+        Pet pet = petRepository.findById(1L).get();
+
+        // when
+        petAlbumSetter(pet, 2);
+
+        List<PetAlbum> petAlbums = pet.getPetAlbums();
+
+        // then
+        Assertions.assertEquals(petAlbums.get(0).getContent(), "Test Content1");
+        Assertions.assertEquals(petAlbums.get(1).getContent(), "Test Content2");
+    }
+
+    @DisplayName("Read_PetAlbums_From_Pet_When_Null_PetAlbums")
+    @Test
+    public void Read_PetAlbums_From_Pet_When_Null_PetAlbums() {
+        // given
+        Pet pet = petRepository.findById(1L).get();
+
+        // when, then
+        Assertions.assertNull(pet.getPetAlbums());
+    }
+
     @DisplayName("Update_Pet")
     @Test
     public void Update_Pet() {
@@ -137,7 +166,7 @@ class PetServiceTest {
         });
     }
 
-    public PetBirth petBirthFactory(String year, String month, String day) {
+   public PetBirth petBirthFactory(String year, String month, String day) {
         return PetBirth.builder()
                 .year(year)
                 .month(month)
@@ -151,5 +180,23 @@ class PetServiceTest {
                 .petType(petType)
                 .petBirth(petBirth)
                 .build();
+    }
+
+    public void petAlbumSetter(Pet pet, int size) {
+        List<PetAlbum> petAlbums = new ArrayList<>();
+
+        for (int i = 0; i < size; i++) {
+            PetAlbum petAlbum = PetAlbum.builder()
+                    .id((long) (i + 1))
+                    .title("Test Title" + (i + 1))
+                    .content("Test Content" + (i + 1))
+                    .pet(pet)
+                    .petAlbumImgs(new ArrayList<>())
+                    .build();
+
+            petAlbums.add(petAlbum);
+        }
+
+        pet.setPetAlbums(petAlbums);
     }
 }
