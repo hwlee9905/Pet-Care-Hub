@@ -50,8 +50,8 @@ public class UserService implements UserDetailsService {
 
     }
     @Transactional(readOnly = true)
-    public User Read() {
-        return userRepository.findById(1L).get();
+    public User Read(String userId) {
+        return userRepository.findByUserId(userId);
     }
     //로그인
     @Transactional(readOnly = true)

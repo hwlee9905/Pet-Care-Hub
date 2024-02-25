@@ -23,7 +23,7 @@ public class UserServiceTest {
     @Test
     @DisplayName("2.[Read]")
     void 회원조회() {
-        User user = userService.Read();
+        User user = userService.Read("user");
         assertThat(user.getAuthentication().getUserId()).isEqualTo("hwlee");
     }
 
