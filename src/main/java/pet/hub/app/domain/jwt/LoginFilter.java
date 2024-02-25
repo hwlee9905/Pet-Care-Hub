@@ -1,11 +1,15 @@
 package pet.hub.app.domain.jwt;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -14,10 +18,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import pet.hub.app.domain.jwt.util.JWTUtil;
 import pet.hub.app.domain.jwt.dto.CustomUserDetails;
+import pet.hub.common.exception.EntityNotFoundException;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Iterator;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -48,17 +54,30 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         GrantedAuthority auth = iterator.next();
 
         String role = auth.getAuthority();
-        log.info("role = " + role);
-        log.info("userId = " + userId);
+        log.info("로그인 성공 : userRole = " + role);
+        log.info("로그인 성공 : userId = " + userId);
         String token = jwtUtil.createJwt(userId, role, 60*60*100L);
-
+        log.info("로그인 성공 : 해당 토큰을 로그인시 Header.Authorization에 포함하세요. Bearer " + token);
         response.addHeader("Authorization", "Bearer " + token);
     }
     //로그인 실패시 실행하는 메소드
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        //로그인 실패시 401 응답 코드 반환
-        response.setStatus(401);
+        log.error("로그인 실패");
+        //로그인 실패 응답
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setCharacterEncoding("UTF-8");
+        LocalDateTime currentTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedTime = currentTime.format(formatter);
+        Map<String, Object> responseData = new HashMap<>();
+        responseData.put("timestamp", formattedTime);
+        responseData.put("error", "Authentication failed: " + failed.getMessage() +" ID와 PW를 확인해주세요.");
+        responseData.put("errorCode", HttpStatus.UNAUTHORIZED.value());
+                ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(responseData);
+        response.getWriter().write(json);
     }
 
     @Override

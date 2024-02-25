@@ -1,6 +1,8 @@
 package pet.hub.common.advice;
 
+import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -10,6 +12,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import pet.hub.common.exception.BusinessException;
+import jakarta.validation.ConstraintViolation;
+
 
 import java.nio.file.AccessDeniedException;
 
@@ -72,4 +76,24 @@ public class GlobalExceptionHandler {
         final ErrorResponse response = ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR);
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    protected ResponseEntity<ErrorResponse> DuplicateException(DataIntegrityViolationException e) {
+        log.error("UserIdDuplicateException", e);
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.USERID_DUPLICATE);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(ErrorCode.USERID_DUPLICATE.getStatus()));
+    }
+    @ExceptionHandler(ConstraintViolationException.class)
+    protected ResponseEntity<ErrorResponse> InvalidInputValueException(ConstraintViolationException e) {
+        log.error("BlackValueException", e);
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.INVALID_INPUT_VALUE);
+        e.getConstraintViolations().forEach(violation -> response.getErrors().add(
+                new ErrorResponse.FieldError(
+                        violation.getPropertyPath().toString(),
+                        violation.getInvalidValue().toString(),
+                        violation.getMessage()
+                )
+        ));
+        return new ResponseEntity<>(response, HttpStatus.valueOf(ErrorCode.INVALID_INPUT_VALUE.getStatus()));
+    }
+
 }

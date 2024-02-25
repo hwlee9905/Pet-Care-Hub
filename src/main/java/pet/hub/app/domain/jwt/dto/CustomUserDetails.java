@@ -13,8 +13,6 @@ import java.util.Collection;
 @Slf4j
 public class CustomUserDetails implements UserDetails {
     private final AuthTokenDto authTokenDto;
-
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 

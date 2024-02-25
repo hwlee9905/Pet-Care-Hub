@@ -44,6 +44,7 @@ public class SecurityConfig {
         //csrf disable
         http
                 .csrf(AbstractHttpConfigurer::disable);
+
         //Form 로그인 방식 disable
         http
                 .formLogin(AbstractHttpConfigurer::disable);
@@ -73,6 +74,8 @@ public class SecurityConfig {
         //LoginFilter 등록
         http
                 .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
+
+        출처: https://uriu.tistory.com/435 [우야&봉즙:티스토리]
         //cors 설정
         http
                 .cors((corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {

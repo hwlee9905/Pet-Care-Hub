@@ -1,6 +1,7 @@
 package pet.hub.app.domain.user.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import pet.hub.app.domain.BaseEntity;
 import pet.hub.app.domain.user.util.InfoSet;
