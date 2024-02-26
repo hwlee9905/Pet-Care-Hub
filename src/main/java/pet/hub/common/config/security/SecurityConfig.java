@@ -83,12 +83,12 @@ public class SecurityConfig {
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         //JWTFilter 등록
-            http
-                    .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
+        http
+                .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
 
-            //LoginFilter 등록
-            http
-                    .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
+        //LoginFilter 등록
+        http
+                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
         //cors 설정
         http
                 .cors((corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {

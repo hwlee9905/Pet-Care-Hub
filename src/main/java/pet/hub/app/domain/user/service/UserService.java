@@ -70,7 +70,6 @@ public class UserService implements UserDetailsService {
             //UserDetails에 담아서 return하면 AutneticationManager가 검증 함
             return new CustomUserDetails(authTokenDto);
         }
-
         return null;
     }
 }

@@ -59,6 +59,20 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         String token = jwtUtil.createJwt(userId, role, 60*60*60L);
         log.info("로그인 성공 : 해당 토큰을 로그인시 Header.Authorization에 포함하세요. Bearer " + token);
         response.addHeader("Authorization", "Bearer " + token);
+
+        response.setStatus(HttpStatus.OK.value());
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setCharacterEncoding("UTF-8");
+        LocalDateTime currentTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formattedTime = currentTime.format(formatter);
+        Map<String, Object> responseData = new HashMap<>();
+        responseData.put("timestamp", formattedTime);
+        responseData.put("message", "로그인 성공");
+        responseData.put("로그인 성공. 해당 토큰을 api 요청시 Header.Authorization에 포함하세요.", "Bearer " + token);
+        ObjectMapper mapper = new ObjectMapper();
+        String json = mapper.writeValueAsString(responseData);
+        response.getWriter().write(json);
     }
     //로그인 실패시 실행하는 메소드
     @Override
