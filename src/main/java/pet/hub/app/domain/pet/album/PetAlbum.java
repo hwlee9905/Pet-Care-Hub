@@ -1,5 +1,6 @@
 package pet.hub.app.domain.pet.album;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,9 +31,10 @@ public class PetAlbum extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "pet_id")
+    @JsonIgnore
     private Pet pet;
 
-    @OneToMany(mappedBy = "petAlbum")
+    @OneToMany(mappedBy = "petAlbum", cascade = CascadeType.REMOVE)
     private List<PetAlbumImg> petAlbumImgs = new ArrayList<>();
 
     protected void setTitle(final String title) {
@@ -56,6 +58,16 @@ public class PetAlbum extends BaseEntity {
 
         if (!pet.getPetAlbums().contains(this)) {
             pet.getPetAlbums().add(this);
+        }
+    }
+
+    protected void setPetAlbumImgs(final List<PetAlbumImg> petAlbumImgs) {
+        if (petAlbumImgs == null) return;
+
+        if (this.petAlbumImgs != null) {
+            this.petAlbumImgs.addAll(petAlbumImgs);
+        } else {
+            this.petAlbumImgs = petAlbumImgs;
         }
     }
 }
