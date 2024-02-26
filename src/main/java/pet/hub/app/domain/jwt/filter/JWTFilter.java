@@ -26,7 +26,7 @@ public class JWTFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException{
         //request에서 Authorization 헤더를 찾음
-        String authorization= request.getHeader("Authorization");
+        String authorization = request.getHeader("Authorization");
 
         //Authorization 헤더 검증
         if (authorization == null || !authorization.startsWith("Bearer ")) {
@@ -56,10 +56,11 @@ public class JWTFilter extends OncePerRequestFilter {
         log.info("role = " + role);
         log.info("userId = " + userId);
         //userEntity를 생성하여 값 set
-        AuthTokenDto user = new AuthTokenDto();
-        user.setRole(role);
-        user.setPassword("temppassword");
-        user.setUsername(userId);
+        AuthTokenDto user = AuthTokenDto.builder()
+                .username(userId)
+                .role(role)
+                .password("temppassword")
+                .build();
 
 
         //UserDetails에 회원 정보 객체 담기

@@ -15,6 +15,7 @@ import pet.hub.app.domain.user.entity.User;
 import pet.hub.app.domain.user.repository.AuthenticationRepository;
 import pet.hub.app.domain.user.repository.UserRepository;
 import pet.hub.app.domain.user.util.Address;
+import pet.hub.app.domain.user.util.InfoSet;
 import pet.hub.app.domain.user.util.Role;
 
 @RequiredArgsConstructor
@@ -30,6 +31,7 @@ public class UserService implements UserDetailsService {
                 .userId(signupRequestDto.getUserId())
                 .email(signupRequestDto.getEmail())
                 .password(bCryptPasswordEncoder.encode(signupRequestDto.getPassword()))
+                .infoSet(InfoSet.DEFAULT)
                 .build();
         authenticationRepository.save(authentication);
         Address address = Address.builder()

@@ -1,5 +1,5 @@
 ### Login
-POST http://localhost:8080/login?id=user&password=1234
+POST http://localhost:8080/login?id=user12&password=qwe123!@#
 
 ### Signup
 #User Signup
@@ -14,8 +14,8 @@ Content-Type: application/json
   "district": "CA",
   "roadAddress": "12345",
   "sex": "MAN",
-  "userId": "user",
-  "password": "1234",
+  "userId": "user12",
+  "password": "qwe123!@#",
   "email": "john@example.com"
 }
 ### Signup validation
@@ -44,4 +44,4 @@ Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwicm9sZSI6Ik
 ### user 로그인 시 user api 접근
 #로그인 성공시 생성되는 Header의 Authorization value로 바꿔줄 것
 GET http://localhost:8080/user
-Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXIiLCJyb2xlIjoiVVNFUiIsImlhdCI6MTcwODgxMjY5NCwiZXhwIjoxNzA4ODEzMDU0fQ.F9oOe6nRrHSQEsY-oxm7iAyjOIZQF-dlDwmsCRqCgfc
+Authorization:Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXIxMiIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzA4OTE0Mjk4LCJleHAiOjE3MDg5MTQ2NTh9.batZFuGMSUxnD3-QjGtkeDDtJTd3vmjZcoJFpk_LCqI

@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,9 +16,13 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.filter.OncePerRequestFilter;
 import pet.hub.app.domain.jwt.LoginFilter;
 import pet.hub.app.domain.jwt.filter.JWTFilter;
 import pet.hub.app.domain.jwt.util.JWTUtil;
+import pet.hub.app.domain.oauth2.SuccessHandler;
+import pet.hub.app.domain.oauth2.filter.OAuth2Filter;
+import pet.hub.app.domain.user.service.OAuth2UserSerivce;
 
 import java.util.Collections;
 
@@ -27,6 +32,8 @@ import java.util.Collections;
 public class SecurityConfig {
     //AuthenticationManager가 인자로 받을 AuthenticationConfiguraion 객체 생성자 주입
     private final AuthenticationConfiguration authenticationConfiguration;
+    private final OAuth2UserSerivce oauth2UserSerivce;
+    private final SuccessHandler successHandler;
     private final JWTUtil jwtUtil;
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -52,6 +59,13 @@ public class SecurityConfig {
         //http basic 인증 방식 disable
         http
                 .httpBasic(AbstractHttpConfigurer::disable);
+        //OAuth2
+        http
+                .oauth2Login((oauth2) -> oauth2
+                        .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
+                                    .userService(oauth2UserSerivce))
+                        .successHandler(successHandler)
+                );
 
         //경로별 인가 작업
         http
@@ -69,13 +83,12 @@ public class SecurityConfig {
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         //JWTFilter 등록
-        http
-                .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
-        //LoginFilter 등록
-        http
-                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
+            http
+                    .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
 
-        출처: https://uriu.tistory.com/435 [우야&봉즙:티스토리]
+            //LoginFilter 등록
+            http
+                    .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
         //cors 설정
         http
                 .cors((corsCustomizer -> corsCustomizer.configurationSource(new CorsConfigurationSource() {

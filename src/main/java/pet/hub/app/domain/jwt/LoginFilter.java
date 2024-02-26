@@ -56,7 +56,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         String role = auth.getAuthority();
         log.info("로그인 성공 : userRole = " + role);
         log.info("로그인 성공 : userId = " + userId);
-        String token = jwtUtil.createJwt(userId, role, 60*60*100L);
+        String token = jwtUtil.createJwt(userId, role, 60*60*60L);
         log.info("로그인 성공 : 해당 토큰을 로그인시 Header.Authorization에 포함하세요. Bearer " + token);
         response.addHeader("Authorization", "Bearer " + token);
     }
