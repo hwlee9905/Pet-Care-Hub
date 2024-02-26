@@ -34,4 +34,4 @@ mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -e "${sql}"
 mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -e "START SLAVE"
 
 # create data base in master DB
-mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -h 172.28.0.2 -e "CREATE DATABASE ${MYSQL_DB}"
+mysql -u root -p"${MYSQL_ROOT_PASSWORD}" -h 172.28.0.2 -e "CREATE DATABASE pet_hub"
