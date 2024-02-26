@@ -1,4 +1,4 @@
-package pet.hub.app.web.controller;
+package pet.hub.app.web.controller.pet;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
