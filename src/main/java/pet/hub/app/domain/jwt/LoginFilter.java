@@ -43,13 +43,13 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     }
     //로그인 성공시 실행하는 메소드 (이곳에서 JWT를 발급합니다.)
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
         //UserDetailsS
-        CustomUserDetails customUserDetails = (CustomUserDetails) authResult.getPrincipal();
+        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
 
         String userId = customUserDetails.getUsername();
 
-        Collection<? extends GrantedAuthority> authorities = authResult.getAuthorities();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
         GrantedAuthority auth = iterator.next();
 

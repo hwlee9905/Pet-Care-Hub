@@ -14,6 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -21,7 +22,6 @@ import pet.hub.app.domain.jwt.LoginFilter;
 import pet.hub.app.domain.jwt.filter.JWTFilter;
 import pet.hub.app.domain.jwt.util.JWTUtil;
 import pet.hub.app.domain.oauth2.SuccessHandler;
-import pet.hub.app.domain.oauth2.filter.OAuth2Filter;
 import pet.hub.app.domain.user.service.OAuth2UserSerivce;
 
 import java.util.Collections;
@@ -69,7 +69,7 @@ public class SecurityConfig {
 
         //경로별 인가 작업
         http
-                .authorizeHttpRequests((auth) -> auth
+                .authorizeHttpRequests(auth -> auth
                         //관리자 기능 api 권한
                         .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
                         //유저 기능 api 권한(수정, 등록, 삭제)
@@ -77,10 +77,9 @@ public class SecurityConfig {
                         //비로그인 회원은 조회만 가능하도록 설정
                         .anyRequest().permitAll()
                 );
-
         //session 설정
         http
-                .sessionManagement((session) -> session
+                .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         //JWTFilter 등록
         http
