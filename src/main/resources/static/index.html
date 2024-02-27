@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+</head>
+<body>
+<h1>Login</h1>
+<button id="naver-login">Naver Login</button>
+<button id="axios-request">Send Axios Request</button>
+
+<script>
+  document.getElementById('naver-login').addEventListener('click', function() {
+    window.location.href = "http://localhost:8080/oauth2/authorization/naver";
+  });
+
+  document.getElementById('axios-request').addEventListener('click', function() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'http://localhost:8080/login?id=user12&password=qwe123!@%23$', true);
+    xhr.withCredentials = true;
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+          alert(JSON.stringify(xhr.responseText));
+        } else {
+          alert('Error: ' + xhr.status);
+        }
+      }
+    };
+    xhr.send();
+  });
+</script>
+</body>
+</html>

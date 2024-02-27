@@ -1,6 +1,7 @@
 package pet.hub.app.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,6 +21,7 @@ import pet.hub.app.domain.user.util.Role;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final AuthenticationRepository authenticationRepository;
@@ -27,6 +29,7 @@ public class UserService implements UserDetailsService {
     //회원가입
     @Transactional(rollbackFor = {Exception.class})
     public User signup(SignupRequestDto signupRequestDto) {
+        log.info("signup password : " + signupRequestDto.getPassword());
         Authentication authentication = Authentication.builder()
                 .userId(signupRequestDto.getUserId())
                 .email(signupRequestDto.getEmail())
