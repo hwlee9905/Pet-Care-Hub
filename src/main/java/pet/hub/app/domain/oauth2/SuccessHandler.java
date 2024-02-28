@@ -33,7 +33,7 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         String token = jwtUtil.createJwt(username, role, 60*60*60L);
 
         response.addHeader("Authorization", "Bearer " + token);
-        response.sendRedirect("http://localhost:8080/");
+        response.sendRedirect("https://localhost:8080/auth");
     }
     private Cookie createCookie(String key, String value) {
 
