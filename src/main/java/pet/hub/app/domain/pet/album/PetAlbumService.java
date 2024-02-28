@@ -22,7 +22,9 @@ public class PetAlbumService {
     private final PetService petService;
 
     @Transactional(rollbackFor = Exception.class)
-    public PetAlbum create(final PetAlbumRequest petAlbumRequest, final Pet pet) {
+    public PetAlbum create(final PetAlbumRequest petAlbumRequest, final Long petId) {
+        Pet pet = petService.readPet(petId);
+
         PetAlbum petAlbum = PetAlbum.builder()
                 .title(petAlbumRequest.title())
                 .content(petAlbumRequest.content())
@@ -30,22 +32,26 @@ public class PetAlbumService {
                 .petAlbumImgs(new ArrayList<>())
                 .build();
 
+        petAlbum.setPetAlbumImgs(petAlbumRequest.petAlbumImgs());
+
         return petAlbumRepository.save(petAlbum);
     }
 
     @Transactional(readOnly = true)
     public PetAlbum read(final Long petAlbumId) {
         return petAlbumRepository.findById(petAlbumId)
-                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 앨범입니다."));
+                .orElseThrow(() -> new EntityNotFoundException("저장된 앨범이 없습니다."));
     }
 
     @Transactional(readOnly = true)
-    public List<PetAlbum> readAll(final Long petId) {
+    public List<PetAlbum> readAllByPetId(final Long petId) {
         Pet pet = petService.readPet(petId);
 
-        List<PetAlbum> petAlbums = pet.getPetAlbums();
-
-        return petAlbums;
+        if (pet.getPetAlbums() == null) {
+            throw new EntityNotFoundException("저장된 앨범이 없습니다.");
+        } else {
+             return pet.getPetAlbums();
+        }
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -54,7 +60,7 @@ public class PetAlbumService {
 
         petAlbum.setTitle(request.title());
         petAlbum.setContent(request.content());
-        petAlbum.setPet(request.pet());
+        petAlbum.setPetAlbumImgs(request.petAlbumImgs());
 
         return petAlbum;
     }
