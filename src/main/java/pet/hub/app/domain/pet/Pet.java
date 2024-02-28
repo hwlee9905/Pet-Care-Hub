@@ -48,7 +48,7 @@ public class Pet {
         this.petBirth.setPetBirth(petBirth);
     }
 
-    protected void setPetAlbums(final List<PetAlbum> petAlbums) {
+    public void setPetAlbums(final List<PetAlbum> petAlbums) {
         if (this.petAlbums != null) {
             this.petAlbums.addAll(petAlbums);
         } else {

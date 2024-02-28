@@ -1,5 +1,6 @@
 package pet.hub.app.domain.pet.album.img;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,5 +28,6 @@ public class PetAlbumImg {
 
     @ManyToOne
     @JoinColumn(name = "pet_album_id")
+    @JsonIgnore
     private PetAlbum petAlbum;
 }
