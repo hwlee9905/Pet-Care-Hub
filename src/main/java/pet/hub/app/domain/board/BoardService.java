@@ -55,8 +55,6 @@ public class BoardService {
      */
     @Transactional(readOnly = true)
     public List<Board> searchBoards(String keyword) {
-        return boardRepository.findByTitleContainingOrContentContaining(keyword, keyword, Pageable.ofSize(5))
-                .stream()
-                .collect(Collectors.toList());
+        return boardRepository.findByTitleContainingOrContentContaining(keyword);
     }
 }
