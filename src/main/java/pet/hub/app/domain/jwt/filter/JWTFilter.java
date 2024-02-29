@@ -2,6 +2,7 @@ package pet.hub.app.domain.jwt.filter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +14,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import pet.hub.app.domain.jwt.dto.AuthTokenDto;
 import pet.hub.app.domain.jwt.util.JWTUtil;
 import pet.hub.app.domain.jwt.dto.CustomUserDetails;
+import pet.hub.app.domain.oauth2.CustomOAuth2User;
+import pet.hub.app.domain.oauth2.dto.OAuth2UserDto;
 
 import java.io.IOException;
+import java.util.Objects;
+
 @RequiredArgsConstructor
 @Slf4j
 public class JWTFilter extends OncePerRequestFilter {
@@ -25,10 +30,9 @@ public class JWTFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException{
+        log.info("request.getRequestURI() in JWTFilter : "+request.getRequestURI());
         //request에서 Authorization 헤더를 찾음
-        String authorization= request.getHeader("Authorization");
-
-        //Authorization 헤더 검증
+        String authorization = request.getHeader("Authorization");
         if (authorization == null || !authorization.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
 
@@ -56,10 +60,11 @@ public class JWTFilter extends OncePerRequestFilter {
         log.info("role = " + role);
         log.info("userId = " + userId);
         //userEntity를 생성하여 값 set
-        AuthTokenDto user = new AuthTokenDto();
-        user.setRole(role);
-        user.setPassword("temppassword");
-        user.setUsername(userId);
+        AuthTokenDto user = AuthTokenDto.builder()
+                .username(userId)
+                .role(role)
+                .password("temppassword")
+                .build();
 
 
         //UserDetails에 회원 정보 객체 담기
@@ -71,5 +76,6 @@ public class JWTFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authToken);
 
         filterChain.doFilter(request, response);
+
     }
 }
