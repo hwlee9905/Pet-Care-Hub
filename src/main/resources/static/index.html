@@ -9,18 +9,22 @@
 <h1>Login</h1>
 <button id="Naver-Login">Naver Login</button>
 <button id="Google-Login">Google Login</button>
+<button id="Kakao-Login">Kakao Login</button>
 <button id="Login-Request">Custom Login</button>
 
 <script>
   document.getElementById('Naver-Login').addEventListener('click', function() {
-    window.location.href = "http://localhost:8080/oauth2/authorization/naver";
+    window.location.href = "https://localhost:8080/oauth2/authorization/naver";
   });
   document.getElementById('Google-Login').addEventListener('click', function() {
     window.location.href = "https://localhost:8080/oauth2/authorization/google";
   });
+  document.getElementById('Kakao-Login').addEventListener('click', function() {
+    window.location.href = "https://localhost:8080/oauth2/authorization/kakao";
+  });
   document.getElementById('Login-Request').addEventListener('click', function() {
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://localhost:8080/login?id=user12&password=qwe123!@%#', true);
+    xhr.open('POST', 'https://localhost:8080/login?id=user12&password=qwe123!@%#', true);
     xhr.withCredentials = true;
     xhr.onreadystatechange = function() {
       if (xhr.readyState === XMLHttpRequest.DONE) {

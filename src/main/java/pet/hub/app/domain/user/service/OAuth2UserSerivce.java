@@ -9,6 +9,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import pet.hub.app.domain.oauth2.dto.OAuth2UserDto;
 import pet.hub.app.domain.oauth2.dto.response.OAuth2GoogleResponseDto;
+import pet.hub.app.domain.oauth2.dto.response.OAuth2KakaoResponseDto;
 import pet.hub.app.domain.oauth2.dto.response.OAuth2NaverResponseDto;
 import pet.hub.app.domain.oauth2.dto.response.OAuth2Response;
 import pet.hub.app.domain.oauth2.CustomOAuth2User;
@@ -39,8 +40,11 @@ public class OAuth2UserSerivce extends DefaultOAuth2UserService {
             infoSet = InfoSet.GOOGLE;
             oAuth2Response = new OAuth2GoogleResponseDto(oAuth2User.getAttributes());
         }
+        else if (registrationId.equals("kakao")) {
+            infoSet = InfoSet.KAKAO;
+            oAuth2Response = new OAuth2KakaoResponseDto(oAuth2User.getAttributes());
+        }
         else {
-
             return null;
         }
         //리소스 서버에서 발급 받은 정보로 사용자를 특정할 아이디값을 만듬
@@ -73,8 +77,6 @@ public class OAuth2UserSerivce extends DefaultOAuth2UserService {
 
             existData.getAuthentication().setEmail(oAuth2Response.getEmail());
             existData.setUsername(oAuth2Response.getName());
-
-            userRepository.save(existData);
 
             OAuth2UserDto oAuth2UserDto = OAuth2UserDto.builder()
                     .username(existData.getAuthentication().getUserId())

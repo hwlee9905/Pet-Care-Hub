@@ -7,7 +7,7 @@ services:
       dockerfile: ./Dockerfile
     restart: always
     env_file:
-      - mysql/master/master.env
+      - ./mysql/master/master.env
     ports:
       - "13306:3306"
     volumes:
@@ -24,7 +24,7 @@ services:
       dockerfile: ./Dockerfile
     restart: always
     env_file:
-      - mysql/slave/slave.env
+      - ./mysql/slave/slave.env
     ports:
       - "13307:3306"
     volumes:

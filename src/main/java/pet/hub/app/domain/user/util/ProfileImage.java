@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class ProfileImage {
-    private String url;
-    private String path;
+    private String imageUrl;
+    private String imagePath;
     private String imageName;
 }
