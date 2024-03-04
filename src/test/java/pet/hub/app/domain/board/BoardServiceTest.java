@@ -18,6 +18,7 @@ import pet.hub.app.web.dto.board.BoardRequestDto;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
@@ -182,5 +183,22 @@ public class BoardServiceTest {
         assertThat(updatedBoard.getTitle()).isEqualTo(updateDto.getTitle());
         assertThat(updatedBoard.getContent()).isEqualTo(updateDto.getContent());
         assertThat(updatedBoard.getBoardTab()).isEqualTo(updateDto.getBoardTab());
+    }
+
+    @DisplayName("Delete Test")
+    @Test
+    public void deleteTest(){
+        BoardRequestDto requestDto = BoardRequestDto.builder()
+                .title("Dto Save Test")
+                .content("Dto Save Test2")
+                .boardTab(BoardTab.CAT)
+                .userId(user.getId())
+                .build();
+
+        Board board = boardService.saveBoard(requestDto);
+
+        boardService.deleteBoard(board.getBoardId());
+
+        assertFalse(boardRepository.findById(board.getBoardId()).isPresent());
     }
 }
