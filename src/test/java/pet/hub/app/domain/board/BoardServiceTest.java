@@ -68,8 +68,8 @@ public class BoardServiceTest {
     }
 
     @Test
-    @DisplayName("Search Test")
-    public void boardSearch() {
+    @DisplayName("SearchAll Test")
+    public void SearchAll() {
 
         BoardRequestDto requestDto = BoardRequestDto.builder()
                 .title("오현두1")
@@ -88,11 +88,67 @@ public class BoardServiceTest {
         boardService.saveBoard(requestDto);
         boardService.saveBoard(requestDto2);
 
-        List<Board> searchResults = boardService.searchBoards("오현두");
+        List<Board> searchResults = boardService.searchAllBoards("오현두");
 
         assertThat(searchResults).isNotEmpty();
         assertThat(searchResults.size()).isEqualTo(2);
         assertTrue(searchResults.stream().allMatch(board -> board.getTitle().contains("오현두") || board.getContent().contains("검색")));
+    }
+
+    @Test
+    @DisplayName("SearchTitle Test")
+    public void SearchTitle() {
+
+        BoardRequestDto requestDto = BoardRequestDto.builder()
+                .title("제목 검색 테스트")
+                .content("내용1")
+                .boardTab(BoardTab.DOG)
+                .userId(user.getId())
+                .build();
+
+        BoardRequestDto requestDto2 = BoardRequestDto.builder()
+                .title("검색 안 되는 게시글")
+                .content("내용2")
+                .boardTab(BoardTab.CAT)
+                .userId(user.getId())
+                .build();
+
+        boardService.saveBoard(requestDto);
+        boardService.saveBoard(requestDto2);
+
+        List<Board> searchResults = boardService.searchTitleBoards("제목 검색");
+
+        assertThat(searchResults).isNotEmpty();
+        assertThat(searchResults.size()).isEqualTo(1);
+        assertTrue(searchResults.stream().allMatch(board -> board.getTitle().contains("제목 검색")));
+    }
+
+    @Test
+    @DisplayName("SearchContent Test")
+    public void SearchContent() {
+
+        BoardRequestDto requestDto = BoardRequestDto.builder()
+                .title("내용 검색 테스트")
+                .content("테스트용")
+                .boardTab(BoardTab.DOG)
+                .userId(user.getId())
+                .build();
+
+        BoardRequestDto requestDto2 = BoardRequestDto.builder()
+                .title("내용 검색 테스트2")
+                .content("검색 안 되는 내용")
+                .boardTab(BoardTab.CAT)
+                .userId(user.getId())
+                .build();
+
+        boardService.saveBoard(requestDto);
+        boardService.saveBoard(requestDto2);
+
+        List<Board> searchResults = boardService.searchContentBoards("테스트");
+
+        assertThat(searchResults).isNotEmpty();
+        assertThat(searchResults.size()).isEqualTo(2);
+        assertTrue(searchResults.stream().allMatch(board -> board.getContent().contains("테스트")));
     }
 
     @Test
