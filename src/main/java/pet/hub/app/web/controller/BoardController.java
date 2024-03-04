@@ -46,4 +46,10 @@ public class BoardController {
         return boardService.searchContentBoards(keyword);
     }
 
+    @DeleteMapping("/{boardId}")
+    public ResponseEntity<Void> deleteBoard(@PathVariable Long boardId) {
+        boardService.deleteBoard(boardId);
+        return ResponseEntity.noContent().build();
+    }
+
 }

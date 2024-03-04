@@ -62,4 +62,8 @@ public class BoardService {
         return boardRepository.findByContentContaining(keyword);
     }
 
+    @Transactional
+    public void deleteBoard(Long boardId){
+        boardRepository.deleteById(boardId);
+    }
 }
