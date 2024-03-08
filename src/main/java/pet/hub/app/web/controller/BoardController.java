@@ -31,9 +31,25 @@ public class BoardController {
         return new ResponseEntity<>(updatedBoard, HttpStatus.OK);
     }
 
-    @GetMapping("/search")
-    public List<Board> searchPosts(@RequestParam("keyword") String keyword) {
-        return boardService.searchBoards(keyword);
+    @GetMapping("/searchAll")
+    public List<Board> searchAllBoards(@RequestParam("keyword") String keyword) {
+        return boardService.searchAllBoards(keyword);
+    }
+
+    @GetMapping("/searchTitle")
+    public List<Board> searchTitleBoards(@RequestParam("keyword") String keyword) {
+        return boardService.searchTitleBoards(keyword);
+    }
+
+    @GetMapping("/searchContent")
+    public List<Board> searchContentBoards(@RequestParam("keyword") String keyword) {
+        return boardService.searchContentBoards(keyword);
+    }
+
+    @DeleteMapping("/{boardId}")
+    public ResponseEntity<Void> deleteBoard(@PathVariable Long boardId) {
+        boardService.deleteBoard(boardId);
+        return ResponseEntity.noContent().build();
     }
 
 }

@@ -1,6 +1,7 @@
 package pet.hub.app.domain.user.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,10 +16,12 @@ import pet.hub.app.domain.user.entity.User;
 import pet.hub.app.domain.user.repository.AuthenticationRepository;
 import pet.hub.app.domain.user.repository.UserRepository;
 import pet.hub.app.domain.user.util.Address;
+import pet.hub.app.domain.user.util.InfoSet;
 import pet.hub.app.domain.user.util.Role;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final AuthenticationRepository authenticationRepository;
@@ -26,10 +29,12 @@ public class UserService implements UserDetailsService {
     //회원가입
     @Transactional(rollbackFor = {Exception.class})
     public User signup(SignupRequestDto signupRequestDto) {
+        log.info("signup password : " + signupRequestDto.getPassword());
         Authentication authentication = Authentication.builder()
                 .userId(signupRequestDto.getUserId())
                 .email(signupRequestDto.getEmail())
                 .password(bCryptPasswordEncoder.encode(signupRequestDto.getPassword()))
+                .infoSet(InfoSet.DEFAULT)
                 .build();
         authenticationRepository.save(authentication);
         Address address = Address.builder()
@@ -47,11 +52,10 @@ public class UserService implements UserDetailsService {
         user.setAuthentication(authentication);
         userRepository.save(user);
         return user;
-
     }
     @Transactional(readOnly = true)
-    public User Read() {
-        return userRepository.findById(1L).get();
+    public User Read(String userId) {
+        return userRepository.findByUserId(userId);
     }
     //로그인
     @Transactional(readOnly = true)
@@ -68,7 +72,6 @@ public class UserService implements UserDetailsService {
             //UserDetails에 담아서 return하면 AutneticationManager가 검증 함
             return new CustomUserDetails(authTokenDto);
         }
-
         return null;
     }
 }
