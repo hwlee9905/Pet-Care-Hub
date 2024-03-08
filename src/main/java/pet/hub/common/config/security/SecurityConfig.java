@@ -62,7 +62,7 @@ public class SecurityConfig {
         //OAuth2
         http
                 .oauth2Login((oauth2) -> oauth2
-                        .userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
+                        .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig
                                     .userService(oauth2UserSerivce))
                         .successHandler(successHandler)
                 );
@@ -94,22 +94,17 @@ public class SecurityConfig {
 
                     @Override
                     public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-
                         CorsConfiguration configuration = new CorsConfiguration();
-
                         //프론트와 협의하여 포트번호를 수정할 것
                         configuration.setAllowedOrigins(Collections.singletonList("https://localhost:8080"));
                         configuration.setAllowedMethods(Collections.singletonList("*"));
                         configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Collections.singletonList("*"));
                         configuration.setMaxAge(3600L);
-
                         configuration.setExposedHeaders(Collections.singletonList("Authorization"));
-
                         return configuration;
                     }
                 })));
         return http.build();
-
     }
 }

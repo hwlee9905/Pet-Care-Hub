@@ -35,6 +35,7 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         response.addHeader("Authorization", "Bearer " + token);
         response.sendRedirect("https://localhost:8080/auth");
     }
+    //쿠키로 JWT 발급
 //    private Cookie createCookie(String key, String value) {
 //
 //        Cookie cookie = new Cookie(key, value);

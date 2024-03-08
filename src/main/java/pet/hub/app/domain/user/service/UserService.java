@@ -52,7 +52,6 @@ public class UserService implements UserDetailsService {
         user.setAuthentication(authentication);
         userRepository.save(user);
         return user;
-
     }
     @Transactional(readOnly = true)
     public User Read(String userId) {
