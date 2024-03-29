@@ -15,7 +15,6 @@ import pet.hub.app.domain.user.util.Sex;
 @Getter
 @Setter
 public class SignupRequestDto {
-
     @NotBlank(message = "이름은 필수 입력 값입니다.")
     private String username;
     private String nickname;
@@ -34,5 +33,4 @@ public class SignupRequestDto {
     @NotBlank(message = "이메일은 필수 입력 값입니다.")
     @Email
     private String email;
-
 }

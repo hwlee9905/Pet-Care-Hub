@@ -23,10 +23,8 @@ public class AdminController {
     //현재 세션 정보 확인
     @GetMapping("/auth")
     public String mainP() {
-
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Iterator<? extends GrantedAuthority> iter = authorities.iterator();
         GrantedAuthority auth = iter.next();

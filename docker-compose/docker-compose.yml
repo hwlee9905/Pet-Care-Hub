@@ -16,7 +16,6 @@ services:
     networks:
       net-mysql:
         ipv4_address: 172.28.0.2
-
   db-slave:
     container_name: mysql-slave
     build:
