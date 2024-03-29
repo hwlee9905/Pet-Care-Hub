@@ -1,4 +1,4 @@
-package pet.hub.app.domain.jwt;
+package pet.hub.app.domain.jwt.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
